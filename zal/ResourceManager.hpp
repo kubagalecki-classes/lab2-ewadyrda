@@ -1,28 +1,36 @@
 #pragma once
 
 #include "Resource.hpp"
-class ResourceManager{
-    
+class ResourceManager
+{
+
     private:
         Resource* wsk;
-    
+
     public:
-        ResourceManager(){this->wsk = new Resource{};}
-        
-        ~ResourceManager(){delete wsk;}
-    
-        ResourceManager(ResourceManager &r){this->resource = new Resource{*r.getResource()};}
-    
-        ResourceManager& operator=( ResourceManager &r){
-            if (this == &r) {
+        ResourceManager(){
+            this->wsk= new Resource{};
+        }
+
+        ResourceManager(ResourceManager &w){
+            this->wsk= new Resource{*w.getResource()};
+        }
+
+        ~ResourceManager(){
+            delete wsk;
+        }
+
+        ResourceManager& operator=( ResourceManager &w){
+            if (this == &w) {
                 return *this;
             }
-            delete wsk;
-            this->wsk = new Resource{*r.getResource()};
+            delete resource;
+            this->resource = new Resource{*w.getResource()};
+
             return *this;
         }
-    
-        double get(){return resource->get();}
-    
+
+        double get(){return wsk->get();}
+
         Resource* getResource(){return wsk;}
 };
