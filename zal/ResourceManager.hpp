@@ -1,36 +1,65 @@
 #pragma once
 
-#include "Resource.hpp"
-class ResourceManager
-{
+#include "include/Resource.hpp"
 
-    private:
-        Resource* wsk;
-
-    public:
-        ResourceManager(){
-            this->wsk= new Resource{};
-        }
-
-        ResourceManager(ResourceManager &w){
-            this->wsk= new Resource{*w.getResource()};
-        }
-
-        ~ResourceManager(){
-            delete wsk;
-        }
-
-        ResourceManager& operator=( ResourceManager &w){
-            if (this == &w) {
-                return *this;
+class ResourceManager{
+    
+        private:
+    
+            Resource* wsk;
+    
+        public:
+    
+            ResourceManager()
+            {
+                 this->wsk = new Resource{};
             }
-            delete resource;
-            this->resource = new Resource{*w.getResource()};
+    
+            ResourceManager(ResourceManager &w)
+            {
+                this->wsk = new Resource{*w.getResource()};
+            }
+    
+            ResourceManager(ResourceManager &&w)
+            {
+                this->wsk = w.getResource();
+                w.wsk = nullptr;
+            }
+    
+            ~ResourceManager(){delete wsk;}
+    
+            ResourceManager& operator=( ResourceManager &w)
+            {
+                if (this == &w) {
+                    return *this;
+                }
+                
+                delete wsk;
+                this->wsk = new Resource{*w.getResource()};
 
-            return *this;
-        }
+                 return *this;
+            }
+    
+            ResourceManager& operator=( ResourceManager &&w)
+            {
+                if (this == &w) {
+                    return *this;
+                 }
+        
+                delete wsk;
+                this->wsk = w.getResource();
+        
+                w.wsk = nullptr;
 
-        double get(){return wsk->get();}
-
-        Resource* getResource(){return wsk;}
+                return *this;
+           }
+    
+            double get(){
+                return wsk->get();
+            }
+    
+            Resource* getResource(){
+                return wsk;
+            }
 };
+
